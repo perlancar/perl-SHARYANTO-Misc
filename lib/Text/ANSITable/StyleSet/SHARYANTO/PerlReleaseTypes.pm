@@ -12,6 +12,8 @@ has cpan_bgcolor    => (is => 'rw');
 has cpan_fgcolor    => (is => 'rw');
 has noncpan_bgcolor => (is => 'rw', default=>sub { '003300' });
 has noncpan_fgcolor => (is => 'rw');
+has rename_bgcolor  => (is => 'rw', default=>sub { '330000' });
+has rename_fgcolor  => (is => 'rw');
 
 # VERSION
 # DATE
@@ -31,8 +33,18 @@ sub apply {
             my $r = $args{row_data};
             my $cols = $t->columns;
 
-            my $repo_idx  = List::MoreUtils::firstidx(
+            my $repo_idx = List::MoreUtils::firstidx(
                 sub {$_ eq 'repo'}, @$cols);
+            my $oldname_idx = List::MoreUtils::firstidx(
+                sub {$_ eq 'oldname'}, @$cols);
+
+            if ($oldname_idx >= 0 && $r->[$oldname_idx]) {
+                $styles{bgcolor} = $self->rename_bgcolor
+                    if defined $self->rename_bgcolor;
+                $styles{fgcolor} = $self->rename_fgcolor
+                    if defined $self->rename_fgcolor;
+                goto DONE;
+            }
 
             if ($repo_idx >= 0 && $r->[$repo_idx] eq 'cpan') {
                 $styles{bgcolor} = $self->cpan_bgcolor
@@ -45,6 +57,8 @@ sub apply {
                 $styles{fgcolor} = $self->noncpan_fgcolor
                     if defined $self->noncpan_fgcolor;
             }
+
+          DONE:
             \%styles;
         },
     );
@@ -63,3 +77,7 @@ sub apply {
 =head2 noncpan_bgcolor
 
 =head2 noncpan_fgcolor
+
+=head2 rename_bgcolor
+
+=head2 rename_fgcolor
