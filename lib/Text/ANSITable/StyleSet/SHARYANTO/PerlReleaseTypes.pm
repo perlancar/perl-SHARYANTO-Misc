@@ -9,9 +9,9 @@ use namespace::clean;
 use List::MoreUtils ();
 
 has cpan_bgcolor    => (is => 'rw');
-has cpan_bgcolor    => (is => 'rw');
+has cpan_fgcolor    => (is => 'rw');
+has noncpan_bgcolor => (is => 'rw', default=>sub { '003300' });
 has noncpan_fgcolor => (is => 'rw');
-has noncpan_fgcolor => (is => 'rw', default=>sub { '003300' });
 
 # VERSION
 # DATE
